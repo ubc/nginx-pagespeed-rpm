@@ -61,7 +61,7 @@ Source6: nginx.vh.example_ssl.conf
 Source7: nginx.suse.init
 Source8: nginx.service
 Source9: nginx.upgrade.sh
-Source10: pagespeed-%{nps_version}-beta.zip 
+Source10: release-%{nps_version}-beta.zip
 Source11: %{nps_version}.tar.gz
 
 License: 2-clause BSD-like license
@@ -85,9 +85,6 @@ Not stripped version of nginx built with the debugging log support.
 
 %prep
 %setup -q
-#%setup -T -D -a 10
-#%setup -T -D -n %{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta -a 11
-#%{__unzip} -o %{SOURCE10}
 cd %{_builddir}/%{name}-%{version}
 %{__unzip} -o %{SOURCE10}
 if [ $? -ne 0 ]; then
