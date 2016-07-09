@@ -1,8 +1,8 @@
 #
 %define nginx_home %{_localstatedir}/cache/nginx
-%define nginx_user nginx
-%define nginx_group nginx
-%define nps_version 1.8.31.4
+%define nginx_user www
+%define nginx_group www
+%define nps_version 1.11.33.2
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -46,7 +46,7 @@ Requires(pre): pwdutils
 
 Summary: High performance web server
 Name: nginx
-Version: 1.6.0
+Version: 1.10.1
 Release: 1%{?dist}.ctlt
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -113,24 +113,34 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp \
         --user=%{nginx_user} \
         --group=%{nginx_group} \
+        --with-debug \
+        --with-file-aio \
         --with-http_ssl_module \
         --with-http_realip_module \
         --with-http_addition_module \
-        --with-http_sub_module \
+        --with-http_auth_request_module \
         --with-http_dav_module \
         --with-http_flv_module \
-        --with-http_mp4_module \
+        --with-http_geoip_module \
         --with-http_gunzip_module \
         --with-http_gzip_static_module \
+        --with-http_image_filter_module \
+        --with-http_mp4_module \
         --with-http_random_index_module \
         --with-http_secure_link_module \
+        --with-http_slice_module \
         --with-http_stub_status_module \
-        --with-http_auth_request_module \
+        --with-http_sub_module \
+        --with-http_v2_module \
+        --with-ipv6 \
         --with-mail \
         --with-mail_ssl_module \
-        --with-file-aio \
-        --with-ipv6 \
-        --with-debug \
+        --with-pcre \
+        --with-stream \
+        --with-stream_ssl_module \
+        --with-threads \
+        --without-http_scgi_module \
+        --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
 	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta \
@@ -153,23 +163,34 @@ make %{?_smp_mflags}
         --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp \
         --user=%{nginx_user} \
         --group=%{nginx_group} \
+        --with-debug \
+        --with-file-aio \
         --with-http_ssl_module \
         --with-http_realip_module \
         --with-http_addition_module \
-        --with-http_sub_module \
+        --with-http_auth_request_module \
         --with-http_dav_module \
         --with-http_flv_module \
-        --with-http_mp4_module \
+        --with-http_geoip_module \
         --with-http_gunzip_module \
         --with-http_gzip_static_module \
+        --with-http_image_filter_module \
+        --with-http_mp4_module \
         --with-http_random_index_module \
         --with-http_secure_link_module \
+        --with-http_slice_module \
         --with-http_stub_status_module \
-        --with-http_auth_request_module \
+        --with-http_sub_module \
+        --with-http_v2_module \
+        --with-ipv6 \
         --with-mail \
         --with-mail_ssl_module \
-        --with-file-aio \
-        --with-ipv6 \
+        --with-pcre \
+        --with-stream \
+        --with-stream_ssl_module \
+        --with-threads \
+        --without-http_scgi_module \
+        --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
 	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta \
@@ -177,61 +198,61 @@ make %{?_smp_mflags}
 make %{?_smp_mflags}
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-%{__make} DESTDIR=$RPM_BUILD_ROOT install
+%{__rm} -rf %{buildroot}
+%{__make} DESTDIR=%{buildroot} install
 
-%{__mkdir} -p $RPM_BUILD_ROOT%{_datadir}/nginx
-%{__mv} $RPM_BUILD_ROOT%{_sysconfdir}/nginx/html $RPM_BUILD_ROOT%{_datadir}/nginx/
+%{__mkdir} -p %{buildroot}%{_datadir}/nginx
+%{__mv} %{buildroot}%{_sysconfdir}/nginx/html %{buildroot}%{_datadir}/nginx/
 
-%{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/nginx/*.default
-%{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/nginx/fastcgi.conf
+%{__rm} -f %{buildroot}%{_sysconfdir}/nginx/*.default
+%{__rm} -f %{buildroot}%{_sysconfdir}/nginx/fastcgi.conf
 
-%{__mkdir} -p $RPM_BUILD_ROOT%{_localstatedir}/log/nginx
-%{__mkdir} -p $RPM_BUILD_ROOT%{_localstatedir}/run/nginx
-%{__mkdir} -p $RPM_BUILD_ROOT%{_localstatedir}/cache/nginx
+%{__mkdir} -p %{buildroot}%{_localstatedir}/log/nginx
+%{__mkdir} -p %{buildroot}%{_localstatedir}/run/nginx
+%{__mkdir} -p %{buildroot}%{_localstatedir}/cache/nginx
 
-%{__mkdir} -p $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d
-%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/nginx/nginx.conf
+%{__mkdir} -p %{buildroot}%{_sysconfdir}/nginx/conf.d
+%{__rm} %{buildroot}%{_sysconfdir}/nginx/nginx.conf
 %{__install} -m 644 -p %{SOURCE4} \
-   $RPM_BUILD_ROOT%{_sysconfdir}/nginx/nginx.conf
+   %{buildroot}%{_sysconfdir}/nginx/nginx.conf
 %{__install} -m 644 -p %{SOURCE5} \
-   $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/default.conf
+   %{buildroot}%{_sysconfdir}/nginx/conf.d/default.conf
 %{__install} -m 644 -p %{SOURCE6} \
-   $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/example_ssl.conf
+   %{buildroot}%{_sysconfdir}/nginx/conf.d/example_ssl.conf
 
-%{__mkdir} -p $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig
+%{__mkdir} -p %{buildroot}%{_sysconfdir}/sysconfig
 %{__install} -m 644 -p %{SOURCE3} \
-   $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/nginx
+   %{buildroot}%{_sysconfdir}/sysconfig/nginx
 
 %if %{use_systemd}
 # install systemd-specific files
-%{__mkdir} -p $RPM_BUILD_ROOT%{_unitdir}
+%{__mkdir} -p %{buildroot}%{_unitdir}
 %{__install} -m644 %SOURCE8 \
-        $RPM_BUILD_ROOT%{_unitdir}/nginx.service
-%{__mkdir} -p $RPM_BUILD_ROOT%{_libexecdir}/initscripts/legacy-actions/nginx
+        %{buildroot}%{_unitdir}/nginx.service
+%{__mkdir} -p %{buildroot}%{_libexecdir}/initscripts/legacy-actions/nginx
 %{__install} -m755 %SOURCE9 \
-        $RPM_BUILD_ROOT%{_libexecdir}/initscripts/legacy-actions/nginx/upgrade
+        %{buildroot}%{_libexecdir}/initscripts/legacy-actions/nginx/upgrade
 %else
 # install SYSV init stuff
-%{__mkdir} -p $RPM_BUILD_ROOT%{_initrddir}
+%{__mkdir} -p %{buildroot}%{_initrddir}
 %if 0%{?suse_version}
 %{__install} -m755 %{SOURCE7} \
-   $RPM_BUILD_ROOT%{_initrddir}/nginx
+   %{buildroot}%{_initrddir}/nginx
 %else
 %{__install} -m755 %{SOURCE2} \
-   $RPM_BUILD_ROOT%{_initrddir}/nginx
+   %{buildroot}%{_initrddir}/nginx
 %endif
 %endif
 
 # install log rotation stuff
-%{__mkdir} -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+%{__mkdir} -p %{buildroot}%{_sysconfdir}/logrotate.d
 %{__install} -m 644 -p %{SOURCE1} \
-   $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/nginx
+   %{buildroot}%{_sysconfdir}/logrotate.d/nginx
 %{__install} -m644 %{_builddir}/%{name}-%{version}/objs/nginx.debug \
-   $RPM_BUILD_ROOT%{_sbindir}/nginx.debug
+   %{buildroot}%{_sbindir}/nginx.debug
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+%{__rm} -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
@@ -342,6 +363,14 @@ if [ $1 -ge 1 ]; then
 fi
 
 %changelog
+* Sat Jul  9 2016 Sage Russell <webmaster@sageth.com>
+- 1.6.1
+- Upgraded pagespeed module to 1.11.33.2
+- Upgraded nginx module to 1.10.1
+- Added HTTP/2 module
+- Added GeoIP module
+- Added image filter module
+
 * Thu Apr 24 2014 Konstantin Pavlov <thresh@nginx.com>
 - 1.6.0
 - http-auth-request module added
@@ -364,12 +393,6 @@ fi
 
 * Tue Oct  8 2013 Sergey Budnevitch <sb@nginx.com>
 - 1.4.3
-
-* Tue Jul 17 2013 Sergey Budnevitch <sb@nginx.com>
-- 1.4.2
-
-* Tue May  6 2013 Sergey Budnevitch <sb@nginx.com>
-- 1.4.1
 
 * Wed Apr 24 2013 Sergey Budnevitch <sb@nginx.com>
 - gunzip module added
@@ -448,5 +471,3 @@ fi
 - 1.0.6
 - replace "conf.d/*" config include with "conf.d/*.conf" in default nginx.conf
 
-* Tue Aug 10 2011 Sergey Budnevitch
-- Initial release
