@@ -2,7 +2,7 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user www
 %define nginx_group www
-%define nps_version 1.11.33.2
+%define nps_version 1.11.33.3
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
