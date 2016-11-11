@@ -4,9 +4,13 @@ Specs to build Nginx RPM with Pagespeed module
 Building the RPM
 ----------------
 
-Option 1:  Run ./buildnginx.sh
+Option 1:  Run 
+```markdown
+./buildnginx.sh
+```
 
 Option 2: 
+```markdown
     git clone https://github.com/Sageth/nginx-pagespeed-rpm.git
     cd nginx-pagespeed-rpm
     NX_VERSION=`grep "Version" SPECS/nginx.spec |cut -d " " -f 2`
@@ -16,7 +20,7 @@ Option 2:
     wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz -P SOURCES/
 
     rpmbuild --define '_topdir `pwd`' -ba SPECS/nginx.spec
-
+```
 
 Updating to Newer Version of Nginx or Pagespeed
 -----------------------------------------------
