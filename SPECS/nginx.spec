@@ -61,8 +61,8 @@ Source6: nginx.vh.example_ssl.conf
 Source7: nginx.suse.init
 Source8: nginx.service
 Source9: nginx.upgrade.sh
-Source10: release-%{nps_version}-beta.zip
-Source11: %{nps_version}.tar.gz
+Source10: latest-stable.zip
+Source11: latest-stable.tar.gz
 
 License: 2-clause BSD-like license
 
@@ -90,7 +90,7 @@ cd %{_builddir}/%{name}-%{version}
 if [ $? -ne 0 ]; then
   exit $?
 fi
-cd ngx_pagespeed-release-%{nps_version}-beta
+cd ngx_pagespeed-latest-stable
 %{__tar} xzf %{SOURCE11}
 if [ $? -ne 0 ]; then
   exit $?
@@ -143,7 +143,7 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta \
+	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-latest-stable \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -193,7 +193,7 @@ make %{?_smp_mflags}
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta \
+	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-latest-stable \
         $*
 make %{?_smp_mflags}
 
