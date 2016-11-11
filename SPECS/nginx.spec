@@ -2,7 +2,7 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user www
 %define nginx_group www
-%define nps_version 1.11.33.3
+%define nps_version 1.11.33.4
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -46,7 +46,7 @@ Requires(pre): pwdutils
 
 Summary: High performance web server
 Name: nginx
-Version: 1.10.1
+Version: 1.10.2
 Release: 1%{?dist}.ctlt
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -363,6 +363,11 @@ if [ $1 -ge 1 ]; then
 fi
 
 %changelog
+* Fri Nov 11 2016 Sage Russell <webmaster@sageth.com>
+- 1.6.2
+- Upgraded pagespeed module to stable 1.11.33.4
+- Upgraded nginx to 1.10.2
+
 * Sat Jul  9 2016 Sage Russell <webmaster@sageth.com>
 - 1.6.1
 - Upgraded pagespeed module to 1.11.33.2
