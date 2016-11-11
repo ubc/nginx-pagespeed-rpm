@@ -4,7 +4,10 @@ Specs to build Nginx RPM with Pagespeed module
 Building the RPM
 ----------------
 
-    git clone https://github.com/ubc/nginx-pagespeed-rpm.gi://github.com/ubc/nginx-pagespeed-rpm.git
+Option 1:  Run ./buildnginx.sh
+
+Option 2: 
+    git clone https://github.com/Sageth/nginx-pagespeed-rpm.git
     cd nginx-pagespeed-rpm
     NX_VERSION=`grep "Version" SPECS/nginx.spec |cut -d " " -f 2`
     wget http://nginx.org/download/nginx-${NX_VERSION}.tar.gz -P SOURCES/
