@@ -2,7 +2,7 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user www
 %define nginx_group www
-%define nps_version 1.11.33.4
+%define nps_version 1.12.34.2
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -61,8 +61,8 @@ Source6: nginx.vh.example_ssl.conf
 Source7: nginx.suse.init
 Source8: nginx.service
 Source9: nginx.upgrade.sh
-Source10: release-%{nps_version}-beta.zip
-Source11: %{nps_version}.tar.gz
+Source10: v%{nps_version}-beta.zip
+Source11: %{nps_version}-x64.tar.gz
 
 License: 2-clause BSD-like license
 
@@ -90,7 +90,7 @@ cd %{_builddir}/%{name}-%{version}
 if [ $? -ne 0 ]; then
   exit $?
 fi
-cd ngx_pagespeed-release-%{nps_version}-beta
+cd ngx_pagespeed-%{nps_version}-beta
 %{__tar} xzf %{SOURCE11}
 if [ $? -ne 0 ]; then
   exit $?
@@ -113,7 +113,6 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp \
         --user=%{nginx_user} \
         --group=%{nginx_group} \
-        --with-debug \
         --with-file-aio \
         --with-http_ssl_module \
         --with-http_realip_module \
@@ -143,7 +142,7 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta \
+	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-beta \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -163,7 +162,6 @@ make %{?_smp_mflags}
         --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp \
         --user=%{nginx_user} \
         --group=%{nginx_group} \
-        --with-debug \
         --with-file-aio \
         --with-http_ssl_module \
         --with-http_realip_module \
@@ -193,7 +191,7 @@ make %{?_smp_mflags}
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-release-%{nps_version}-beta \
+	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-beta \
         $*
 make %{?_smp_mflags}
 
