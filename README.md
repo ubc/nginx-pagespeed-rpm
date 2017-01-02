@@ -25,6 +25,7 @@ Option 2:
 
     # 64-bit PSOL
     wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}-x64.tar.gz -P SOURCES/
+
     rpmbuild --define '_topdir `pwd`' -ba SPECS/nginx.spec
 ```
 
