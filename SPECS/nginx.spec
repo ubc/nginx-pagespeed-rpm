@@ -46,7 +46,7 @@ Requires(pre): pwdutils
 
 Summary: High performance web server
 Name: nginx
-Version: 1.12.0
+Version: 1.12.1
 Release: 1%{?dist}.ctlt
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -131,7 +131,6 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --with-http_stub_status_module \
         --with-http_sub_module \
         --with-http_v2_module \
-        --with-ipv6 \
         --with-mail \
         --with-mail_ssl_module \
         --with-pcre \
