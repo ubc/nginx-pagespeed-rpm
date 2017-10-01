@@ -3,6 +3,7 @@
 %define nginx_user www
 %define nginx_group www
 %define nps_version 1.12.34.2
+%define nps_type stable
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -61,7 +62,7 @@ Source6: nginx.vh.example_ssl.conf
 Source7: nginx.suse.init
 Source8: nginx.service
 Source9: nginx.upgrade.sh
-Source10: v%{nps_version}-beta.zip
+Source10: v%{nps_version}-%{nps_type}.zip
 Source11: %{nps_version}-x64.tar.gz
 
 License: 2-clause BSD-like license
@@ -90,7 +91,7 @@ cd %{_builddir}/%{name}-%{version}
 if [ $? -ne 0 ]; then
   exit $?
 fi
-cd ngx_pagespeed-%{nps_version}-beta
+cd ngx_pagespeed-%{nps_version}-%{nps_type}
 %{__tar} xzf %{SOURCE11}
 if [ $? -ne 0 ]; then
   exit $?
@@ -141,7 +142,7 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-beta \
+	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-%{nps_type} \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -189,7 +190,7 @@ make %{?_smp_mflags}
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-beta \
+	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-%{nps_type} \
         $*
 make %{?_smp_mflags}
 
