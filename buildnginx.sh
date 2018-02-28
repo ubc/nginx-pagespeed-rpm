@@ -8,11 +8,8 @@ wget http://nginx.org/download/nginx-${NX_VERSION}.tar.gz -P SOURCES/ && \
 NPS_VERSION=`grep "define nps_version" SPECS/nginx.spec |cut -d " " -f 3` && \
 NPS_TYPE=`grep "define nps_type" SPECS/nginx.spec | cut -d " " -f 3` && \
 
-wget https://github.com/pagespeed/ngx_pagespeed/archive/v${NPS_VERSION}-${NPS_TYPE}.zip -P SOURCES/ && \
+wget https://github.com/apache/incubator-pagespeed-ngx/archive/v${NPS_VERSION}-${NPS_TYPE}.zip -P SOURCES/ && \
 
-# 32-bit PSOL
-# wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}-ia32.tar.gz -P SOURCES/ && \
-
-# 64-bit PSOL
 wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}-x64.tar.gz -P SOURCES/ && \
+
 rpmbuild -ba SPECS/nginx.spec

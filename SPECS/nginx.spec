@@ -2,8 +2,8 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user www
 %define nginx_group www
-%define nps_version 1.12.34.2
-%define nps_type stable
+%define nps_version 1.13.35.1
+%define nps_type beta
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -47,7 +47,7 @@ Requires(pre): pwdutils
 
 Summary: High performance web server
 Name: nginx
-Version: 1.13.3
+Version: 1.13.9
 Release: 1%{?dist}.ctlt
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -91,7 +91,8 @@ cd %{_builddir}/%{name}-%{version}
 if [ $? -ne 0 ]; then
   exit $?
 fi
-cd ngx_pagespeed-%{nps_version}-%{nps_type}
+######cd ngx_pagespeed-%{nps_version}-%{nps_type}
+cd incubator-pagespeed-ngx-%{nps_version}-%{nps_type}
 %{__tar} xzf %{SOURCE11}
 if [ $? -ne 0 ]; then
   exit $?
@@ -142,7 +143,7 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-%{nps_type} \
+	--add-module=%{_builddir}/%{name}-%{version}/incubator-pagespeed-ngx-%{nps_version}-%{nps_type} \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -190,7 +191,7 @@ make %{?_smp_mflags}
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_pagespeed-%{nps_version}-%{nps_type} \
+	--add-module=%{_builddir}/%{name}-%{version}/incubator-pagespeed-ngx-%{nps_version}-%{nps_type} \
         $*
 make %{?_smp_mflags}
 
