@@ -2,7 +2,7 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user www
 %define nginx_group www
-%define nps_version 1.13.35.2
+%define nps_version 1.13.35.1
 %define nps_type beta
 
 # distribution specific definitions
@@ -47,7 +47,7 @@ Requires(pre): pwdutils
 
 Summary: High performance web server
 Name: nginx
-Version: 1.13.12
+Version: 1.14.0
 Release: 1%{?dist}.ctlt
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -86,12 +86,22 @@ Not stripped version of nginx built with the debugging log support.
 
 %prep
 %setup -q
+
+cd %{_builddir}/ngx_brotli
+git submodule update --init
+
 cd %{_builddir}/%{name}-%{version}
 %{__unzip} -o %{SOURCE10}
 if [ $? -ne 0 ]; then
   exit $?
 fi
-######cd ngx_pagespeed-%{nps_version}-%{nps_type}
+
+## Apply Patch for GLIBC on Fedora 28: https://trac.nginx.org/nginx/ticket/1469
+wget https://src.fedoraproject.org/cgit/rpms/nginx.git/plain/0001-unix-ngx_user-Apply-fix-for-really-old-bug-in-glibc-.patch -O ./nginx_fedora28.patch
+patch -p1 < ./nginx_fedora28.patch
+rm -f ./nginx_fedora28.patch
+## End Patch
+
 cd incubator-pagespeed-ngx-%{nps_version}-%{nps_type}
 %{__tar} xzf %{SOURCE11}
 if [ $? -ne 0 ]; then
@@ -144,6 +154,7 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
 	--add-module=%{_builddir}/%{name}-%{version}/incubator-pagespeed-ngx-%{nps_version}-%{nps_type} \
+        --add-module=%{_builddir}/ngx_brotli \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -192,6 +203,7 @@ make %{?_smp_mflags}
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
 	--add-module=%{_builddir}/%{name}-%{version}/incubator-pagespeed-ngx-%{nps_version}-%{nps_type} \
+        --add-module=%{_builddir}/ngx_brotli \
         $*
 make %{?_smp_mflags}
 
