@@ -96,12 +96,6 @@ if [ $? -ne 0 ]; then
   exit $?
 fi
 
-## Apply Patch for GLIBC on Fedora 28: https://trac.nginx.org/nginx/ticket/1469
-wget https://src.fedoraproject.org/cgit/rpms/nginx.git/plain/0001-unix-ngx_user-Apply-fix-for-really-old-bug-in-glibc-.patch -O ./nginx_fedora28.patch
-patch -p1 < ./nginx_fedora28.patch
-rm -f ./nginx_fedora28.patch
-## End Patch
-
 cd incubator-pagespeed-ngx-%{nps_version}-%{nps_type}
 %{__tar} xzf %{SOURCE11}
 if [ $? -ne 0 ]; then
