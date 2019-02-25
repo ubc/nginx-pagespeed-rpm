@@ -3,7 +3,7 @@
 %define nginx_user www
 %define nginx_group www
 %define nps_version 1.13.35.2
-%define nps_type beta
+%define nps_type stable
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -85,7 +85,7 @@ Requires: nginx
 Not stripped version of nginx built with the debugging log support.
 
 %prep
-%setup -q
+%setup
 
 cd %{_builddir}/ngx_brotli
 git submodule update --init
