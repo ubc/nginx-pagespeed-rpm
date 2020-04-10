@@ -17,4 +17,4 @@ wget --no-verbose https://github.com/apache/incubator-pagespeed-ngx/archive/v${N
 
 wget --no-verbose https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}-x64.tar.gz -P ./SOURCES/ && \
 
-rpmbuild --define "_sourcedir `pwd`/SOURCES" --define "_builddir `pwd`/BUILD" -bb SPECS/nginx.spec
+rpmbuild --define "_sourcedir $(pwd)/SOURCES" --define "_builddir $(pwd)/BUILD" -bb $(pwd)/SPECS/nginx.spec
