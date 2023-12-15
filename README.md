@@ -1,4 +1,4 @@
-Specs to build Nginx RPM with Pagespeed module
+Specs to build Nginx RPM with Brotli module
 ==============================================
 
 Building the RPM
@@ -9,12 +9,9 @@ Run
 ./buildnginx.sh
 ```
 
-Updating to Newer Version of Nginx or Pagespeed
+Updating to Newer Version of Nginx
 -----------------------------------------------
 
-Update nps_version and Version in the SPECS/nginx.spec file.
-
+Update nginx Version in the SPECS/nginx.spec file.
 nginx: http://nginx.org/en/download.html
-
-pagespeed: https://www.modpagespeed.com/doc/release_notes
 

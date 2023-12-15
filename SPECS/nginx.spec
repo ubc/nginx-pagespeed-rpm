@@ -2,8 +2,6 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user www
 %define nginx_group www
-%define nps_version 1.13.35.2
-%define nps_type stable
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
@@ -62,8 +60,6 @@ Source6: nginx.vh.example_ssl.conf
 Source7: nginx.suse.init
 Source8: nginx.service
 Source9: nginx.upgrade.sh
-Source10: v%{nps_version}-%{nps_type}.zip
-Source11: %{nps_version}-x64.tar.gz
 
 License: 2-clause BSD-like license
 
@@ -90,17 +86,6 @@ Not stripped version of nginx built with the debugging log support.
 cd %{_builddir}/ngx_brotli
 git submodule update --init
 
-cd %{_builddir}/%{name}-%{version}
-%{__unzip} -o %{SOURCE10}
-if [ $? -ne 0 ]; then
-  exit $?
-fi
-
-cd incubator-pagespeed-ngx-%{nps_version}-%{nps_type}
-%{__tar} xzf %{SOURCE11}
-if [ $? -ne 0 ]; then
-  exit $?
-fi
 chmod -Rf a+rX,u+w,g-w,o-w .
 
 %build
@@ -147,7 +132,6 @@ chmod -Rf a+rX,u+w,g-w,o-w .
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/incubator-pagespeed-ngx-%{nps_version}-%{nps_type} \
         --add-module=%{_builddir}/ngx_brotli \
         $*
 make %{?_smp_mflags}
@@ -196,7 +180,6 @@ make %{?_smp_mflags}
         --without-http_uwsgi_module \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/incubator-pagespeed-ngx-%{nps_version}-%{nps_type} \
         --add-module=%{_builddir}/ngx_brotli \
         $*
 make %{?_smp_mflags}
